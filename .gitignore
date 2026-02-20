@@ -36,3 +36,6 @@ data/
 *.ckpt
 *.h5
 *.pkl
+
+#local history
+.history/
