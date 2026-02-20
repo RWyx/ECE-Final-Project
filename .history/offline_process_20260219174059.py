@@ -6,4 +6,4 @@ class Offline_Process:
         y_min = translated_df["latitude"].min()
         translated_df["x_~"] = translated_df["longitude"] - x_min
         translated_df["y_~"] = translated_df["latitude"] - y_min
-        return translated_df, x_min, y_min
+        
