@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.ndimage import gaussian_filter
 class Offline_Process:
     def coordinate_translation(df):
         translated_df = df.copy()
@@ -33,5 +34,16 @@ class Offline_Process:
             binary_grids[uid] = X
 
         return binary_grids, W_fine, H_fine
-    def Gaussian_Smoothing(df, W_fine, H_fine):
-        pass
+    
+    def Gaussian_Smoothing(binary_grids, std):
+        smoothed_grids = {}
+        for uid, X in binary_grids.items():
+            X_smooth = gaussian_filter(
+                X.astype(np.float32),
+                sigma = std,
+                mode = "constant",
+                cval = 0.0
+            )
+            smoothed_grids[uid] = X_smooth
+
+        return smoothed_grids
