@@ -9,15 +9,29 @@ class Offline_Process:
         translated_df["y_~"] = translated_df["latitude"] - y_min
         return translated_df, x_min, y_min
 
-    def discretization(df):
+    def discretization(df, c):
         dis_df = df.copy()
-        c = 0.012138 #C is not provided in the paper, I just put my lucky number
-        
         dis_df["i"] = np.floor(dis_df["x_~"] / c).astype(int)
         dis_df["j"] = np.floor(dis_df["y_~"] / c).astype(int)
 
         return dis_df
-        
-        
-        
     
+    def form_matrix(df):
+        matrix_df = df.copy()
+        W_fine = int(matrix_df["i"].max()) + 1
+        H_fine = int(matrix_df["j"].max()) + 1
+
+        binary_grids = {}
+        
+        for uid, user_df in matrix_df.groupby("user_id", sort=False):
+            i = user_df["i"].to_numpy(dtype=int)
+            j = user_df["j"].to_numpy(dtype=int)
+
+            X = np.zeros((W_fine, H_fine), dtype=np.uint8)
+            X[i, j] = 1
+
+            binary_grids[uid] = X
+
+        return binary_grids, W_fine, H_fine
+    def Gaussian_Smoothing(df, W_fine, H_fine):
+        pass
